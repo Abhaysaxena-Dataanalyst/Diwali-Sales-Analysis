@@ -1,0 +1,162 @@
+  import pandas as pd
+  import numpy as np
+  import matplotlib.pyplot as plt
+  %matplotlib inline
+  import seaborn as sns
+  
+  df = pd.read_csv("Diwali Sales Data.csv", encoding='latin1')
+  df.shape
+  
+  # Checking data top 5 data of every column
+  df.head()
+  
+  # Checking  how much null value is avalible in the  data
+  df.info()
+  
+  # Delete the blank colums having no values
+  df.drop(['Status', 'unnamed1'], axis = 1, inplace = True)
+  df.info()
+  
+  # Check the null values in the data
+  pd.isnull(df).sum()
+  
+  # Delete null values(Permanently)
+  df.dropna(inplace= True)
+  pd.isnull(df).sum()
+  
+  # Change the datatype
+  df['Amount'] = df['Amount'].astype(int)
+  df.dtypes
+  
+  # Checeking information of the numerical values in the dataset
+  df.describe()
+  
+  
+  EXPLORATRY DATA ANALYSIS
+  
+  GENDER
+  
+  #Showing BAR CHART FOR the GENDER
+  ax = sns.countplot(x = 'Gender', data = df)
+  
+  for bars in ax.containers:
+      ax.bar_label(bars)
+      
+  plt.show()
+  
+  
+  sales_gen = df.groupby(['Gender'], as_index= False)['Amount'].sum().sort_values(by='Amount', ascending= False)
+  
+  sns.barplot(x = 'Gender', y= 'Amount' , data = sales_gen)
+  plt.show()
+  
+  
+  #Showing BAR CHART FOR the Age
+  ax = sns.countplot(x = 'Age Group', hue = 'Gender', data = df)
+  
+  for bars in ax.containers:
+      ax.bar_label(bars)
+      
+  plt.show()
+  
+  
+  sales_age = df.groupby(['Age Group'], as_index=False)['Amount'].sum().sort_values(by='Amount', ascending=False)
+  
+  sns.barplot(x = 'Age Group', y='Amount', data = sales_age)
+  plt.show()
+  
+  
+  #Check Order place by states
+  sales_state = df.groupby(['State'], as_index=False)['Orders'].sum().sort_values(by='Orders', ascending=False).head(10)
+  sns.set(rc={'figure.figsize':(19,5)}) 
+  sns.barplot(data = sales_state, x = "State",y= 'Orders') 
+  plt.show()
+  
+  
+  #Check purchasing power by states
+  sales_state = df.groupby(['State'], as_index=False)['Amount'].sum().sort_values(by='Amount', ascending=False).head(10)
+  sns.set(rc={'figure.figsize':(19,5)}) 
+  sns.barplot(data = sales_state, x = "State",y= 'Amount') 
+  plt.show()
+  
+  
+  #Showing BAR CHART FOR the Mariale Status
+  ax = sns.countplot(data = df, x = 'Marital_Status')
+  
+  sns.set(rc={'figure.figsize': (6,5)})
+  for bars in ax.containers:
+      ax.bar_label(bars)
+      
+  plt.show()
+  
+  
+  #Check purchasing power by Marital
+  sales_state = df.groupby(['Marital_Status', 'Gender'], as_index=False)['Amount'].sum().sort_values(by='Amount', ascending=False).head(10)
+  sns.set(rc={'figure.figsize':(6,5)}) 
+  sns.barplot(data = sales_state, x = "Marital_Status",y= 'Amount',hue= 'Gender') 
+  plt.show()
+  
+  
+  OCCUPATION
+  
+  #Showing Spending more amount by BAR CHART FOR the Occupation
+  sns.set(rc={'figure.figsize':(20,8)}) 
+  ax = sns.countplot(data = df, x = 'Occupation')
+  
+  for bars in ax.containers:
+      ax.bar_label(bars)
+      
+  plt.show()
+  
+  
+  #Check purchasing power by Occupations
+  sales_state = df.groupby(['Occupation'], as_index=False)['Amount'].sum().sort_values(by='Amount', ascending=False).head(10)
+  sns.set(rc={'figure.figsize':(26,5)}) 
+  sns.barplot(data = sales_state, x = "Occupation",y= 'Amount',) 
+  plt.show()
+  
+  
+  # Product Category
+  
+  
+  #Showing Spending more amount by BAR CHART FOR the Product 
+  sns.set(rc={'figure.figsize':(20,8)}) 
+  ax = sns.countplot(data = df, x = 'Product_Category')
+  
+  for bars in ax.containers:
+      ax.bar_label(bars)
+      
+  plt.show()
+  
+  
+  #Check purchasing power by Product 
+  sales_state = df.groupby(['Product_Category'], as_index=False)['Amount'].sum().sort_values(by='Amount', ascending=False).head(10)
+  sns.set(rc={'figure.figsize':(20,10)}) 
+  sns.barplot(data = sales_state, x = "Product_Category",y= 'Amount',) 
+  plt.show()
+  
+  
+  #Check Ordering power by Product
+  sales_state = df.groupby(['Product_Category'], as_index=False)['Orders'].sum().sort_values(by='Orders', ascending=False).head(10)
+  sns.set(rc={'figure.figsize':(19,5)}) 
+  sns.barplot(data = sales_state, x = "Product_Category",y= 'Orders') 
+  plt.show()
+  
+  
+  
+  # Checking top 10 selling item name
+  
+  
+  #Check Ordering power by Product
+  sales_state = df.groupby(['Product_ID'], as_index=False)['Orders'].sum().sort_values(by='Orders', ascending=False).head(10)
+  sns.set(rc={'figure.figsize':(19,5)}) 
+  sns.barplot(data = sales_state, x = "Product_ID",y= 'Orders') 
+  plt.show()
+  
+  
+  Conclusion
+  
+  Married womens, age group 25-35 yrs from UP Maharastra and Karnatka working with in IT sector HealthCare and Aviation
+  are morelikely product to buy from food, clothing and electronics category
+  
+  
